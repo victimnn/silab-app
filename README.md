@@ -1,27 +1,122 @@
-# silab-app
+#SILAB-APP
 
-# Como Abrir e Rodar o Projeto Laravel
+## 🚀 Como rodar este projeto Laravel
 
-Este guia detalha os passos necessários para configurar e executar este projeto Laravel em sua máquina local.
+Siga os passos abaixo para rodar o projeto localmente.
 
-## Pré-requisitos
+### ✅ Pré-requisitos
 
-Antes de começar, certifique-se de ter os seguintes softwares instalados:
+Antes de começar, certifique-se de ter instalado:
 
-* **PHP**: Versão 8.0 ou superior é recomendada.
+- [PHP](https://www.php.net/) (versão compatível com o Laravel do projeto)
+- [Composer](https://getcomposer.org/)
+- [Laravel](https://laravel.com/) (opcional, se usar `laravel` globalmente)
+- [MySQL](https://www.mysql.com/) ou outro banco de dados compatível
+- [Node.js](https://nodejs.org/) e [npm](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/) (para assets front-end)
 
-* **Composer**: Gerenciador de dependências para PHP.
+---
 
-* **Node.js & npm (ou yarn)**: Para compilar assets front-end (se aplicável).
+### 📦 Instalando dependências
 
-* **Um sistema de banco de dados**: MySQL, PostgreSQL, SQLite, etc.
+Clone o repositório e entre na pasta do projeto:
 
-* **Git**: Para clonar o repositório.
+```bash
+git clone https://github.com/seu-usuario/seu-projeto.git
+cd seu-projeto
+```
 
-## Passo a Passo
+Instale as dependências PHP com o Composer:
 
-Siga os passos abaixo para colocar o projeto em funcionamento:
+```bash
+composer install
+```
 
-1. **Clone o Repositório**
+Instale as dependências front-end (caso aplicável):
 
-   Abra o terminal ou prompt de comando e clone o repositório para o seu diretório local:
+```bash
+npm install
+# ou
+yarn
+```
+
+---
+
+### ⚙️ Configuração do ambiente
+
+Copie o arquivo `.env.example` e renomeie para `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Gere a chave da aplicação:
+
+```bash
+php artisan key:generate
+```
+
+Configure as variáveis de ambiente no arquivo `.env`, especialmente:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nome_do_banco
+DB_USERNAME=usuario
+DB_PASSWORD=senha
+```
+
+---
+
+### 🧱 Executando as migrations (e seeders, se houver)
+
+Crie as tabelas no banco de dados:
+
+```bash
+php artisan migrate
+```
+
+Se houver seeders:
+
+```bash
+php artisan db:seed
+```
+
+---
+
+### 🖥️ Rodando o servidor local
+
+Inicie o servidor:
+
+```bash
+php artisan serve
+```
+
+Acesse em: [http://localhost:8000](http://localhost:8000)
+
+---
+
+### 🛠️ Compilando assets (opcional)
+
+Se estiver usando Laravel Mix/Vite:
+
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+---
+
+### 🧪 Rodando os testes (opcional)
+
+```bash
+php artisan test
+```
+
+---
+
+### 📚 Observações
+
+- Certifique-se de que o banco de dados está rodando.
+- Verifique permissões das pastas `storage` e `bootstrap/cache` se tiver problemas.
