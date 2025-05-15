@@ -3,8 +3,10 @@
 <div class="container">
   <div class="header-content">
     <div class="d-flex align-items-center mb-3 mb-md-0">
-      <h1 class="site-title">Sigesc</h1>
-      <span class="ms-2 badge bg-light text-primary">Beta</span>
+      <a href="/" class="text-decoration-none text-white">
+        <h1 class="site-title">Sigesc</h1>
+      </a>
+        <span class="ms-2 badge bg-light text-primary">Beta</span>
     </div>
     
     <nav class="navbar navbar-expand-lg">
@@ -23,8 +25,6 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="/places/new">Novo Espaço</a></li>
               <li><a class="dropdown-item" href="/places">Meus Espaços</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/places/explore">Explorar Espaços</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">

@@ -11,6 +11,9 @@
     </div>
 
     <div class="card-body">
+      <div class="d-flex justify-content-end mb-3">
+            <a href="/places" class="btn btn-primary">Meus Espaços</a>
+        </div>
         <form action="" method="POST">
             @csrf
             @isset($place)
