@@ -82,8 +82,6 @@
 </style>
 @endsection
 
-@if (session('success') != null)
-  @section('scripts')
-  <script src="{{asset('toast.js')}}"></script>
-  @endsection
-@endif
+@section('scripts')
+  <script src="{{asset('js/toast.js')}}"></script>
+@endsection
