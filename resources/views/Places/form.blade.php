@@ -14,7 +14,7 @@
         <div class="d-flex justify-content-end mb-3">
             <a href="/places" class="btn btn-primary"><i class="fas fa-list-ul me-1"></i>Meus Espaços</a>
         </div>
-        <form action="" method="POST" class="needs-validation" novalidate>
+        <form action="" method="POST" class=" " >
             @csrf
             @isset($place)
                 @method('put')
@@ -84,30 +84,6 @@
 
 @if (session('success') != null)
   @section('scripts')
-  <script>
-        // Ativa o tooltip do Bootstrap
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-        
-        // Ativa o toast de sucesso
-        const toastLiveExample = document.getElementById('liveToast')
-        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-        toastBootstrap.show()
-        
-        // Ativa a validação de formulário
-        (() => {
-            'use strict'
-            const forms = document.querySelectorAll('.needs-validation')
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
-  </script>
+  <script src="{{asset('toast.js')}}"></script>
   @endsection
 @endif
