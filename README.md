@@ -22,7 +22,7 @@ Clone o repositório e entre na pasta do projeto:
 
 ```bash
 git clone https://github.com/victimnn/silab-app.git
-cd seu-projeto
+cd silab-app
 ```
 
 Instale as dependências PHP com o Composer:
