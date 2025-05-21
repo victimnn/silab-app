@@ -144,6 +144,4 @@
 
 @section('scripts')
     <script src="{{asset('js/confirmationModal.js')}}"></script>
-        
-    </script>
 @endsection
