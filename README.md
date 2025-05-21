@@ -21,7 +21,7 @@ Antes de começar, certifique-se de ter instalado:
 Clone o repositório e entre na pasta do projeto:
 
 ```bash
-git clone https://github.com/seu-usuario/seu-projeto.git
+git clone https://github.com/victimnn/silab-app.git
 cd seu-projeto
 ```
 
