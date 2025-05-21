@@ -14,7 +14,7 @@
         <div class="d-flex justify-content-end mb-3">
             <a href="/places" class="btn btn-primary"><i class="fas fa-list-ul me-1"></i>Meus Espaços</a>
         </div>
-        <form action="" method="POST" class="needs-validation" novalidate>
+        <form action="" method="POST" class=" " >
             @csrf
             @isset($place)
                 @method('put')
