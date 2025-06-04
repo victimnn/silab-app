@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    
     /**
      * Run the migrations.
      */
@@ -13,6 +14,14 @@ return new class extends Migration
     {
         Schema::create('schedulings', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->tinyInteger('class_number'); // 1-6
+            $table->string('shift'); // 'morning', 'afternoon', 'evening'
+            $table->unsignedBigInteger('place_id'); // Foreign key to places table
+            $table->unsignedBigInteger('user_id'); // Foreign key to users table
+
+            $table->foreign('place_id')->references('id')->on('places')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
