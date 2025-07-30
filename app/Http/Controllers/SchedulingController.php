@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\scheduling;
 use Illuminate\Http\Request;
+use App\Models\Place;
 
 class SchedulingController extends Controller
 {
@@ -12,7 +13,10 @@ class SchedulingController extends Controller
      */
     public function index()
     {
-        //
+        $places = Place::all();
+        return view('Scheduling/index', [
+            'places' => $places,
+        ]);
     }
 
     /**
