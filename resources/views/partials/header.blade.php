@@ -32,10 +32,10 @@
               <i class="fas fa-calendar-alt"></i>Agendamentos
             </a>
             <ul class="dropdown-menu" aria-labelledby="bookingsDropdown">
-              <li><a class="dropdown-item" href="/bookings/new">Novo Agendamento</a></li>
-              <li><a class="dropdown-item" href="/bookings">Meus Agendamentos</a></li>
+              <li><a class="dropdown-item" href="/scheduling/new">Novo Agendamento</a></li>
+              <li><a class="dropdown-item" href="/scheduling">Meus Agendamentos</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/bookings/history">Histórico</a></li>
+              <li><a class="dropdown-item" href="/scheduling/history">Histórico</a></li>
             </ul>
           </li>
           <li class="nav-item">
