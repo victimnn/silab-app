@@ -47,9 +47,9 @@
                         <td>Rubens</td>
                         <td>
                             <button class="btn btn-primary btn-sm btn-schedule" 
-                            data-class-number=""
-                            data-place-id=""
-                            data-shift=""
+                            data-class-number="1"                            
+                            data-shift="MANHA"
+                            data-place-id="3"
                             >
                             <i class="fas fa-pencil-alt"></i> Agendar
                         </button>
@@ -84,19 +84,43 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const buttons = document.querySelectorAll('.btn-schedule');
-        buttons.forEach(button => {
-            button.addEventListener('click', function() {
-                const classNumber = this.getAttribute('data-class-number');
-                const placeId = this.getAttribute('data-place-id');
-                const shift = this.getAttribute('data-shift');
 
-                // Aqui você pode adicionar a lógica para agendar a aula
-                console.log(`Agendando aula ${classNumber} no local ${placeId} para o turno ${shift}`);
+        buttons.forEach(button => {
+            button.addEventListener('click', async function() {
+                const schedule = {
+                    date: document.getElementById('schedule-date').value,
+                    class_number: this.dataset.classNumber,
+                    shift: this.dataset.shift,
+                    place_id: this.dataset.placeId,
+                    user_id: "1"
+                };
+
+                try {
+                    const response = await fetch('/scheduling/new', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(schedule)
+                    });
+                    if (response.ok) {
+                        // sucesso
+                        alert('Agendamento realizado!');
+                    } else {
+                        // erro
+                        console.error('Erro ao agendar');
+                    }
+                } catch (error) {
+                    console.error('Erro de rede:', error);
+                }
             });
         });
     });
 
     //logica para os botões de navegação de data
+
+    let today = new Date();
 
     const dateInput = document.getElementById('schedule-date');
     document.getElementById('prev-day-btn').onclick = function() {
@@ -110,8 +134,11 @@
         dateInput.value = date.toISOString().slice(0,10);
     };
     document.getElementById('today-btn').onclick = function() {
-        let today = new Date();
         dateInput.value = today.toISOString().slice(0,10);
+    };
+
+    window.onload = function() {
+        document.getElementById("schedule-date").value = today.toISOString().slice(0,10);
     };
 </script>
 @endsection
