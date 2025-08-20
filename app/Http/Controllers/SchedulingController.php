@@ -32,7 +32,22 @@ class SchedulingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $scheduling = new scheduling();
+            $scheduling->date = $request->date;
+            $scheduling->class_number = $request->class_number;
+            $scheduling->shift = $request->shift;
+            $scheduling->place_id = $request->place_id; 
+            $scheduling->user_id = $request->user_id;
+            $scheduling->save();
+
+            return response()->json(['success' => 'Agendamento realizado com sucesso'], 200);
+        }
+        catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
