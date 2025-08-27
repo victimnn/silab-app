@@ -42,38 +42,25 @@
                    </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1° - 07:10 as 08:00</td>
-                        <td>Rubens</td>
-                        <td>
-                            <button class="btn btn-primary btn-sm btn-schedule" 
-                            data-class-number="1"                            
-                            data-shift="MANHA"
-                            data-place-id="3"
-                            >
-                            <i class="fas fa-pencil-alt"></i> Agendar
-                        </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2° - 08:00 as 08:50</td>
-                    </tr>
-                    <tr>
-                        <td>3° - 09:00 as 09:40</td>
-                    </tr>
-                    <tr>
-                        <td>4° - 10:00 as 10:50</td>
-                    </tr>
-                    <tr>
-                        <td>5° - 11:00 as 11:40</td>
-                    </tr>
-                    <tr>
-                        <td>6° - 12:00 as 12:30</td>
-                    </tr>
-
-                    <tr><td>7° - 13:00 as 13:50</td></tr>
-                    <tr><td>8° - 14:00 as 14:40</td></tr>
-
+                    @foreach (range(1, 7) as $class)
+                        <tr>
+                            <td>{{ $class }}°</td>
+                            @foreach ($places as $place)
+                                @php
+                                    $schedule = $schedules[$class][$place->id] ?? null;
+                                @endphp
+                                <td>
+                                    <button class="btn btn-primary btn-sm btn-schedule" 
+                                        data-class-number="{{ $schedule['class_number'] ?? $class }}"                            
+                                        data-shift="{{ $schedule['shift'] ?? 'MANHA' }}"
+                                        data-place-id="{{ $place->id }}"
+                                    >
+                                        <i class="fas fa-pencil-alt"></i> Agendar
+                                    </button>
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
