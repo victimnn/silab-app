@@ -13,11 +13,36 @@ class SchedulingController extends Controller
      */
     public function index()
     {
-        $places = Place::all();
-        return view('Scheduling/index', [
-            'places' => $places,
-        ]);
-    }
+        $date = now()->toDateString();
+
+        $places = Place::orderBy('name')->get();
+
+        $classNumbers = range(1, 7);
+
+        $schedules = scheduling::query()
+            ->select('class_number', 'shift', 'place_id', 'user_id')
+            ->with('user:id,name')
+            ->whereDate('date', $date)
+            ->get()
+            ->keyBy(fn($s) => $s->class_number . '-' . $s->place_id);
+
+            $lookup = [];
+            foreach ($classNumbers as $class) {
+                foreach ($places as $place) {
+                    $lookup[$class][$place->id] = $schedules[$class . '-' . $place->id]
+                        ?? [
+                            "class_number" => $class,
+                            "place_id" => $place->id,
+                            "shift" => "MANHA"
+                    ];
+                }
+            }
+
+            return view('Scheduling/index', [
+                'places' => $places,
+                'schedules' => $lookup,
+            ]);
+        }
 
     /**
      * Show the form for creating a new resource.

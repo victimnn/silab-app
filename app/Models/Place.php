@@ -9,6 +9,6 @@ class Place extends Model
     protected $table = 'places';
 
     public function schedulings() : HasMany {
-        return $this->hasMany(Scheduling::class);
+        return $this->hasMany(Place::class);
     }
 }
