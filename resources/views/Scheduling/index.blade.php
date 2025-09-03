@@ -21,7 +21,7 @@
         </button>
         <button class="btn btn-outline-secondary" type="button" id="today-btn">Hoje</button>
         <label for="schedule-date" class="input-group-text bg-white border-end-0">Data</label>
-        <input type="date" id="schedule-date" class="form-control" value="2025-08-06" aria-label="Selecionar data">
+        <input type="date" id="schedule-date" class="form-control" value="{{ $date }}" min="{{ now()->toDateString() }}" aria-label="Selecionar data">
     </div>
 
     <a href="/places/new" class="btn btn-primary px-3 py-2 d-flex align-items-center gap-2">
@@ -36,27 +36,28 @@
                         <th>Aulas</th>
                         @forelse ($places as $place)
                             <th>{{ $place->name }}</th>
-                        @empty
-                            
+                        @empty   
                         @endforelse
                    </tr>
                 </thead>
                 <tbody>
-                    @foreach (range(1, 7) as $class)
+                    @foreach ($schedules as $class_number => $schedule)
                         <tr>
-                            <td>{{ $class }}°</td>
+                            <td>{{ $class_number }}°</td>
                             @foreach ($places as $place)
-                                @php
-                                    $schedule = $schedules[$class][$place->id] ?? null;
-                                @endphp
+                                @php $cell = $schedule[$place->id] @endphp
                                 <td>
-                                    <button class="btn btn-primary btn-sm btn-schedule" 
-                                        data-class-number="{{ $schedule['class_number'] ?? $class }}"                            
-                                        data-shift="{{ $schedule['shift'] ?? 'MANHA' }}"
-                                        data-place-id="{{ $place->id }}"
-                                    >
-                                        <i class="fas fa-pencil-alt"></i> Agendar
-                                    </button>
+                                    @if(isset($cell->user))
+                                        {{ $cell->user->name }}
+                                    @else
+                                        <button class="btn btn-primary btn-sm btn-schedule" 
+                                            data-class-number="{{ $cell->class_number }}"                            
+                                            data-shift="{{ $cell->shift }}"
+                                            data-place-id="{{ $cell->place_id }}"
+                                        >
+                                            <i class="fas fa-pencil-alt"></i> Agendar
+                                        </button>
+                                    @endif
                                 </td>
                             @endforeach
                         </tr>
@@ -92,11 +93,13 @@
                         body: JSON.stringify(schedule)
                     });
                     if (response.ok) {
-                        // sucesso
-                        alert('Agendamento realizado!');
+                        const data = await response.json();
+                        // Update the button to show the user name
+                        button.parentElement.innerHTML = data.user_name;
+                        alert(data.success);
                     } else {
-                        // erro
-                        console.error('Erro ao agendar');
+                        const errorData = await response.json();
+                        alert(errorData.error || 'Erro ao agendar');
                     }
                 } catch (error) {
                     console.error('Erro de rede:', error);
@@ -108,24 +111,38 @@
     //logica para os botões de navegação de data
 
     let today = new Date();
+    let todayStr = today.toISOString().slice(0, 10);
 
     const dateInput = document.getElementById('schedule-date');
     document.getElementById('prev-day-btn').onclick = function() {
         let date = new Date(dateInput.value);
         date.setDate(date.getDate() - 1);
-        dateInput.value = date.toISOString().slice(0,10);
+        let newDateStr = date.toISOString().slice(0, 10);
+        if (newDateStr < todayStr) {
+            alert('Não é possível selecionar datas passadas.');
+            return;
+        }
+        dateInput.value = newDateStr;
+        window.location.href = '/scheduling?date=' + dateInput.value;
     };
     document.getElementById('next-day-btn').onclick = function() {
         let date = new Date(dateInput.value);
         date.setDate(date.getDate() + 1);
-        dateInput.value = date.toISOString().slice(0,10);
+        dateInput.value = date.toISOString().slice(0, 10);
+        window.location.href = '/scheduling?date=' + dateInput.value;
     };
     document.getElementById('today-btn').onclick = function() {
-        dateInput.value = today.toISOString().slice(0,10);
+        dateInput.value = todayStr;
+        window.location.href = '/scheduling?date=' + dateInput.value;
     };
 
-    window.onload = function() {
-        document.getElementById("schedule-date").value = today.toISOString().slice(0,10);
-    };
+    dateInput.addEventListener('change', function() {
+        if (this.value < todayStr) {
+            alert('Não é possível selecionar datas passadas.');
+            this.value = todayStr;
+            return;
+        }
+        window.location.href = '/scheduling?date=' + this.value;
+    });
 </script>
 @endsection

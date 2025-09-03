@@ -13,7 +13,10 @@ class SchedulingController extends Controller
      */
     public function index()
     {
-        $date = now()->toDateString();
+        $date = request('date', now()->toDateString());
+        if ($date < now()->toDateString()) {
+            $date = now()->toDateString();
+        }
 
         $places = Place::orderBy('name')->get();
 
@@ -30,7 +33,7 @@ class SchedulingController extends Controller
             foreach ($classNumbers as $class) {
                 foreach ($places as $place) {
                     $lookup[$class][$place->id] = $schedules[$class . '-' . $place->id]
-                        ?? [
+                        ?? (object)[
                             "class_number" => $class,
                             "place_id" => $place->id,
                             "shift" => "MANHA"
@@ -41,6 +44,7 @@ class SchedulingController extends Controller
             return view('Scheduling/index', [
                 'places' => $places,
                 'schedules' => $lookup,
+                'date' => $date,
             ]);
         }
 
@@ -58,6 +62,23 @@ class SchedulingController extends Controller
     public function store(Request $request)
     {
         try {
+            if ($request->date < now()->toDateString()) {
+                return response()->json(['error' => 'Não é possível agendar em datas passadas.'], 400);
+            }
+
+            // Check if slot is already scheduled
+            $existing = scheduling::where('date', $request->date)
+                ->where('class_number', $request->class_number)
+                ->where('shift', $request->shift)
+                ->where('place_id', $request->place_id)
+                ->first();
+
+            if ($existing) {
+                return response()->json([
+                    'error' => 'Este horário já está agendado.'
+                ], 409);
+            }
+
             $scheduling = new scheduling();
             $scheduling->date = $request->date;
             $scheduling->class_number = $request->class_number;
@@ -66,7 +87,10 @@ class SchedulingController extends Controller
             $scheduling->user_id = $request->user_id;
             $scheduling->save();
 
-            return response()->json(['success' => 'Agendamento realizado com sucesso'], 200);
+            return response()->json([
+                'success' => 'Agendamento realizado com sucesso',
+                'user_name' => $scheduling->user->name
+            ], 200);
         }
         catch (\Exception $e) {
             return response()->json([
