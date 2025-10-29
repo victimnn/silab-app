@@ -4,7 +4,7 @@
   <div class="header-content">
     <div class="d-flex align-items-center mb-3 mb-md-0">
       <a href="/" class="text-decoration-none text-white">
-        <h1 class="site-title">Sigesc</h1>
+        <h1 class="site-title">Silab</h1>
       </a>
         <span class="ms-2 badge bg-light text-primary">Beta</span>
     </div>

@@ -80,7 +80,7 @@
                     class_number: this.dataset.classNumber,
                     shift: this.dataset.shift,
                     place_id: this.dataset.placeId,
-                    user_id: "1"
+                    user_id: {{ Auth::id()}}
                 };
 
                 try {
