@@ -32,14 +32,8 @@
               <i class="fas fa-calendar-alt"></i>Agendamentos
             </a>
             <ul class="dropdown-menu" aria-labelledby="bookingsDropdown">
-              <li><a class="dropdown-item" href="/scheduling/new">Novo Agendamento</a></li>
               <li><a class="dropdown-item" href="/scheduling">Meus Agendamentos</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/scheduling/history">Histórico</a></li>
             </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white {{ request()->is('reports*') ? 'active' : '' }}" href="/reports"><i class="fas fa-chart-bar"></i>Relatórios</a>
           </li>
         </ul>
       </div>
@@ -52,9 +46,6 @@
             <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
           </button>
           <ul class="dropdown-menu" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="/profile"><i class="fas fa-id-card me-2"></i>Meu Perfil</a></li>
-            <li><a class="dropdown-item" href="/settings"><i class="fas fa-cog me-2"></i>Configurações</a></li>
-            <li><hr class="dropdown-divider"></li>
             <li>
               <form method="POST" action="/logout">
                 @csrf

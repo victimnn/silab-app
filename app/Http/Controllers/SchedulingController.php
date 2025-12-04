@@ -23,7 +23,7 @@ class SchedulingController extends Controller
         $classNumbers = range(1, 7);
 
         $schedules = scheduling::query()
-            ->select('class_number', 'shift', 'place_id', 'user_id')
+            ->select('id', 'class_number', 'shift', 'place_id', 'user_id', 'date')
             ->with('user:id,name')
             ->whereDate('date', $date)
             ->get()
@@ -126,8 +126,34 @@ class SchedulingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(scheduling $scheduling)
+    public function destroy($id)
     {
-        //
+        try {
+            $scheduling = Scheduling::findOrFail($id);
+            
+            // Check if the authenticated user owns this scheduling
+            if ($scheduling->user_id !== auth()->id()) {
+                return response()->json([
+                    'error' => 'Você não tem permissão para desagendar este horário.'
+                ], 403);
+            }
+
+            // Check if the scheduling date is not in the past
+            if ($scheduling->date < now()->toDateString()) {
+                return response()->json([
+                    'error' => 'Não é possível desagendar horários passados.'
+                ], 400);
+            }
+
+            $scheduling->delete();
+
+            return response()->json([
+                'success' => 'Agendamento cancelado com sucesso.'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erro ao cancelar agendamento: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
